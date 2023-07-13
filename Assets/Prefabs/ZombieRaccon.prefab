@@ -12,9 +12,12 @@ GameObject:
   - component: {fileID: 5052778668326197289}
   - component: {fileID: 1834754183406589814}
   - component: {fileID: -1153947114828381452}
-  m_Layer: 0
+  - component: {fileID: 1975827730919596001}
+  - component: {fileID: -1754920217770615761}
+  - component: {fileID: 6755848803981270431}
+  m_Layer: 6
   m_Name: ZombieRaccon
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,10 +99,10 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.056756437, y: 0.14901486}
+  m_Offset: {x: -0.12657723, y: 0.14901486}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.56951576, y: 0.15890938}
@@ -110,7 +113,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.46157157, y: 0.28663874}
+  m_Size: {x: 0.60121316, y: 0.28663874}
   m_EdgeRadius: 0
 --- !u!114 &-1153947114828381452
 MonoBehaviour:
@@ -124,11 +127,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ce7b72ee14c16047a8af35542b37876, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 20
   damage: 0
-  speed: 0.02
-  attackInterval: 0
-  towerDetected: 0
-  stopTime: 1
-  moveTime: 5
-  isMoving: 1
+  speed: 0.03
+  attackInterval: 2
+  detectedTower: {fileID: 0}
+  animator: {fileID: 1975827730919596001}
+--- !u!95 &1975827730919596001
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3700850409454624010}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 49551258ac3eafe4db1246d19017df1a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &-1754920217770615761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3700850409454624010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0dd6eb120435c34d9ab5d862a5b1dcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!50 &6755848803981270431
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3700850409454624010}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

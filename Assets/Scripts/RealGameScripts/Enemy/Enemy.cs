@@ -10,17 +10,16 @@ public class Enemy : MonoBehaviour
     public int damage = 0;
     public float speed = 0f;
     public float attackInterval = 0f;
-    Coroutine attackOrder;
-    //Tower detectedTower;
+    public Coroutine attackOrder;
+    public Tower detectedTower;
 
-    public bool towerDetected = false;
     void Start()
     {
     }
 
     void Update()
     {
-        if (!towerDetected)
+        if (!detectedTower)
         {
             Move();
         }
@@ -31,10 +30,10 @@ public class Enemy : MonoBehaviour
         transform.Translate(Vector2.left * speed * Time.deltaTime);
     }
 
-    public void LoseHealth()
+    public void LoseHealth(int damage)
     {
         //Decrease health value
-        health--;
+        health -= damage;
         //Blink Red animation
         StartCoroutine(BlinkRed());
         //Check if health is zero => destroy enemy
@@ -62,21 +61,30 @@ public class Enemy : MonoBehaviour
         attackOrder = StartCoroutine(Attack());
     }
 
-    //public void InflictDamage()
-    //{
-    //    if (detectedTower != null)
-    //    {
-    //        bool towerDied = detectedTower.LoseHealth(damage);
+    public virtual void InflictDamage()
+    {
+        if (detectedTower != null)
+        {
+            bool towerDied = detectedTower.LoseHealth(damage);
 
-    //        if (towerDied)
-    //        {
-    //            detectedTower = null;
-    //            StopCoroutine(attackOrder);
-    //        }
-    //    }
-    //}
+            if (towerDied)
+            {
+                detectedTower = null;
+                StopCoroutine(attackOrder);
+            }
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (detectedTower)
+            return;
+
+        if (collision.tag == "Tower")
+        {
+            Debug.Log("has tower");
+            detectedTower = collision.GetComponent<Tower>();
+            attackOrder = StartCoroutine(Attack());
+        }
     }
 }

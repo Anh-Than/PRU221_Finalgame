@@ -49,6 +49,26 @@ public class PlaceTower : MonoBehaviour
             if (!isPreview)
             {
                 previewTower = SpawnPreviewTower(mousePos);
+                previewTower.GetComponent<BoxCollider2D>().enabled = false;
+                switch (spawnID)
+                {
+                    case 0:
+                        previewTower.GetComponent<Tower_Miso>().enabled = false;
+                        break;
+                    case 1:
+                        previewTower.GetComponent<Tower_Ramen>().enabled = false;
+                        break;
+                    case 2:
+                        previewTower.GetComponent<Tower_Nori>().enabled = false;
+                        break;
+                    case 3:
+                        previewTower.GetComponent<Tower_Tare>().enabled = false;
+                        break;
+                    case 4:
+                        previewTower.GetComponent<Tower_ChaShu>().enabled = false;
+                        break;
+                    default: break;
+                }
                 highlight = Instantiate(highlightPrefab, cellPosCenter, Quaternion.identity);
             }
             if (isPreview)
@@ -104,17 +124,36 @@ public class PlaceTower : MonoBehaviour
             //check if the cell is spawnable (collider)
             if (spawnTilemap.GetColliderType(cellPosDefault) == Tile.ColliderType.Sprite)
             {
-                Spawn(cellPosCenter, cellPosDefault);
-                spawnTilemap.SetColliderType(cellPosDefault, Tile.ColliderType.None);
+                int towerCost = TowerCost(spawnID);
+                if (CurrencySystem.instance.EnoughCurrency(towerCost))
+                {
+                    CurrencySystem.instance.Use(towerCost);
+                    Spawn(cellPosCenter, cellPosDefault);
+                    spawnTilemap.SetColliderType(cellPosDefault, Tile.ColliderType.None);
+                }
             }
         }
     }
 
     private void Spawn(Vector3 position, Vector3Int cellPosition)
     {
-        Instantiate(towerPrefabs[spawnID], position, Quaternion.identity);
+        GameObject tower = Instantiate(towerPrefabs[spawnID], position, Quaternion.identity);
+        tower.GetComponent<Tower>().Init(cellPosition);
         //Deselect tower
         DeselectTower();
+    }
+
+    public int TowerCost(int id)
+    {
+        switch (id)
+        {
+            case 0: return towerPrefabs[id].GetComponent<Tower>().cost;
+            case 1: return towerPrefabs[id].GetComponent<Tower>().cost;
+            case 2: return towerPrefabs[id].GetComponent<Tower>().cost;
+            case 3: return towerPrefabs[id].GetComponent<Tower>().cost;
+            case 4: return towerPrefabs[id].GetComponent<Tower>().cost;
+            default: return -1;
+        }
     }
 
     public void SelectTower(int id)
@@ -122,8 +161,34 @@ public class PlaceTower : MonoBehaviour
         DeselectTower();
         //Set spawnId
         spawnID = id;
-        //Set current state of mouse
-        mouseState = MouseState.TowerSelected;
+        int towerCost = TowerCost(spawnID);
+        if (CurrencySystem.instance.EnoughCurrency(towerCost))
+        {
+            //Set current state of mouse
+            mouseState = MouseState.TowerSelected;
+        }
+        else if (!CurrencySystem.instance.EnoughCurrency(towerCost))
+        {
+            StartCoroutine(BlinkRed(id));
+        }
+    }
+    IEnumerator BlinkRed(int id)
+    {
+
+        towerUIs[id].GetComponent<Image>().color = Color.red;
+        //Wait for really small amount of time 
+        yield return new WaitForSeconds(0.1f);
+        //Revert to default color
+        towerUIs[id].GetComponent<Image>().color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        towerUIs[id].GetComponent<Image>().color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        towerUIs[id].GetComponent<Image>().color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        towerUIs[id].GetComponent<Image>().color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        towerUIs[id].GetComponent<Image>().color = Color.white;
+
     }
 
     public void DeselectTower()

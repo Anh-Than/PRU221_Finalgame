@@ -34,4 +34,27 @@ public class CurrencySystem : MonoBehaviour
         currentFertilizer = defaultFertilizer;
         fertilizerCount.text = defaultFertilizer.ToString();
     }
+
+    public bool EnoughCurrency(int val)
+    {
+        //Check if the val is equal or more than currency
+        if (val <= currentFertilizer)
+            return true;
+        else
+            return false;
+    }
+
+    public bool Use(int val)
+    {
+        if (EnoughCurrency(val))
+        {
+            currentFertilizer -= val;
+            return true;
+        }
+        else
+        {
+            return false;
+
+        }
+    }
 }
