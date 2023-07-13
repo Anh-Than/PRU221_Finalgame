@@ -9,10 +9,12 @@ public class Tower_Tare : Tower
     public Enemy enemyDetected;
     public Animator animator;
     public bool isEating;
+    public bool hasEaten;
 
     protected override void Start()
     {
         base.Start();
+        hasEaten = false;
     }
 
     public void Update()
@@ -27,8 +29,13 @@ public class Tower_Tare : Tower
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if(hasEaten)
+        {
+            return;
+        }
         if(collision.tag == "Enemy")
         {            
+            hasEaten = true;
             StartCoroutine(EndEating());
             enemyDetected = collision.GetComponent<Enemy>();
             collision.GetComponent<Shrinking>().ScaleToTarget(new Vector3(0.1f, 0.1f, 0.1f), shrinkTime);
@@ -46,7 +53,7 @@ public class Tower_Tare : Tower
     IEnumerator EndEating()
     {
         isEating = true;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(3);
         isEating = false;
         Die();
     }

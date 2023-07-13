@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class CloudSpawner : MonoBehaviour
 {
     public List<GameObject> spawnPoints;
-    public List<GameObject> enemyPrefabs;
+    public List<GameObject> cloudPrefabs;
     public float spawnRate;
     public bool canSpawn = true;
     void Start()
     {
+        Spawn();
         StartCoroutine(Spawner());
     }
     void Update()
     {
-        
+
     }
 
     Vector3 randomSpawnPoint()
@@ -23,16 +24,16 @@ public class EnemySpawner : MonoBehaviour
         return spawnPoints[number].GetComponent<Transform>().position;
     }
 
-    GameObject randomEnemyPrefabs()
+    GameObject randomCloudPrefabs()
     {
-        int number = Random.Range(0, enemyPrefabs.Count);
-        return enemyPrefabs[number];
+        int number = Random.Range(0, cloudPrefabs.Count);
+        return cloudPrefabs[number];
     }
 
     private IEnumerator Spawner()
     {
         WaitForSeconds wait = new WaitForSeconds(spawnRate);
-        while(true)
+        while (true)
         {
             yield return wait;
             Spawn();
@@ -41,6 +42,6 @@ public class EnemySpawner : MonoBehaviour
 
     void Spawn()
     {
-        Instantiate(randomEnemyPrefabs(), randomSpawnPoint(), Quaternion.identity);
+        Instantiate(randomCloudPrefabs(), randomSpawnPoint(), Quaternion.identity);
     }
 }
