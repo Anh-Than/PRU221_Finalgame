@@ -39,6 +39,7 @@ public class Enemy : MonoBehaviour
         //Check if health is zero => destroy enemy
         if (health <= 0)
         {
+            ScoreSystem.instance.GainScore(1);
             Destroy(gameObject);
         }
     }
