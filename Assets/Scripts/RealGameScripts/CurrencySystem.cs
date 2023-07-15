@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CurrencySystem : MonoBehaviour
 {
     public static CurrencySystem instance;
+    public Text floatingText;
     void Awake() => instance = this;
 
     public Text fertilizerCount;
@@ -17,6 +19,7 @@ public class CurrencySystem : MonoBehaviour
     {
         fertilizerCount.text = defaultFertilizer.ToString();
         currentFertilizer = defaultFertilizer;
+        floatingText.enabled = false;
     }
 
     void Update()
@@ -26,6 +29,15 @@ public class CurrencySystem : MonoBehaviour
 
     public void GainCurrency(int amount)
     {
+        floatingText.enabled = true;
+        floatingText.GetComponent<Animator>().SetTrigger("gain");
+        StartCoroutine(WaitAnimationGain(amount));        
+    }
+
+    IEnumerator WaitAnimationGain(int amount)
+    {            
+        floatingText.text = "+"+amount;      
+        yield return new WaitForSeconds(0.8f);
         currentFertilizer += amount;
     }
 

@@ -57,6 +57,7 @@ public class Tower_Ramen : Tower
     {
         //Instantiate shoot item
         GameObject shotItem = Instantiate(prefab_shootItem, shootPoint);
+        shotItem.GetComponent<SpriteRenderer>().sortingOrder = 1;
         //Set its values  
         shotItem.GetComponent<ShootItem>().Init(damage);
     }

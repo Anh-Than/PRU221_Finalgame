@@ -37,8 +37,7 @@ public class Tower_Miso : Tower
     {
         if (isReady)
         {
-            Debug.Log("Here");
-            CurrencySystem.instance.currentFertilizer += GainAmount;
+            CurrencySystem.instance.GainCurrency(GainAmount);
             animator.Play("MisoHappy");
             isPlayingHappyAnimation |= true;
             StartCoroutine(waitAnimationHappy(2));

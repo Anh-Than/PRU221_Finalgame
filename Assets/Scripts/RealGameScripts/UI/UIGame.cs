@@ -27,6 +27,8 @@ public class UIGame : MonoBehaviour
     private void Start()
     {
         highscore = ScoreSystem.instance.highscore;
+        highscoreText.text = highscore.ToString();
+
         for(int i = 0; i < priceTags.Count; i++)
         {
             priceTags[i].text = towers[i].cost.ToString();

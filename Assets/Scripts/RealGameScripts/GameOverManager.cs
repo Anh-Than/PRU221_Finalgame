@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,6 +48,12 @@ public class GameOverManager : MonoBehaviour
             Debug.Log("Here");
             gameOverPanel.SetActive(true);
             disowned.SetActive(false);
+
+            Tower[] towers = FindObjectsOfType<Tower>();
+            foreach (Tower tower in towers)
+            {
+                tower.GetComponent<Tower>().Die();
+            }
             StartCoroutine(PanelFadeIn());
             StartCoroutine(ShowFunctionPanel());
         }

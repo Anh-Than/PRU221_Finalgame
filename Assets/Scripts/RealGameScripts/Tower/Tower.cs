@@ -33,7 +33,7 @@ public class Tower : MonoBehaviour
         return false;
     }
     //Die
-    protected virtual void Die()
+    public virtual void Die()
     {
         Debug.Log("Tower is dead");
         FindObjectOfType<PlaceTower>().RevertCellState(cellPosition);
