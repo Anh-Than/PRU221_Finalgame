@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
+using UnityEngine.Tilemaps;
 
 public class Tower_ChaShu : Tower
 {
@@ -14,6 +15,7 @@ public class Tower_ChaShu : Tower
     public bool readyToCharge;
     public bool hasCollided;
     public int aliveTime;
+
     protected override void Start()
     {
         StartCoroutine(AliveTime());
@@ -67,6 +69,7 @@ public class Tower_ChaShu : Tower
         readyToCharge = false;
         yield return new WaitForSeconds(0.5f);
         readyToCharge=true;
+        FindObjectOfType<PlaceTower>().RevertCellState(cellPosition);
     }
 
     IEnumerator AliveTime()

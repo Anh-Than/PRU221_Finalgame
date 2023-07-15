@@ -6,7 +6,7 @@ public class Tower : MonoBehaviour
 {
     public int health;
     public int cost;
-    private Vector3Int cellPosition;
+    public Vector3Int cellPosition;
 
 
     protected virtual void Start()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.UI;
 
 public class GameOverManager : MonoBehaviour
 {
+
+    public static GameOverManager instance;
     public GameObject gameOverPanel;
     public GameObject disowned;
     public GameObject[] Uis;
@@ -13,7 +16,12 @@ public class GameOverManager : MonoBehaviour
     int i;
     float fadeMargin = 0.01f;
     float interval = 0.02f;
-    
+    string highscoreFile;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         defaultR = 0.2f;
@@ -23,17 +31,18 @@ public class GameOverManager : MonoBehaviour
         {
             obj.SetActive(false);
         }
+        highscoreFile = Application.dataPath + "/HighscoreText" + "/highscore.txt";
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Enemy")
+        if (collision.tag == "Enemy")
         {
             Debug.Log("Here");
             gameOverPanel.SetActive(true);
@@ -45,13 +54,13 @@ public class GameOverManager : MonoBehaviour
 
     IEnumerator PanelFadeIn()
     {
-        if(i < (1/fadeMargin))
+        if (i < (1 / fadeMargin))
         {
             i++;
             gameOverPanel.GetComponent<Image>().color = new Color(0, 0, 0, defaultR + (fadeMargin * i));
             yield return new WaitForSeconds(interval);
             StartCoroutine(PanelFadeIn());
-        }     
+        }
     }
 
     IEnumerator ShowFunctionPanel()
@@ -61,5 +70,14 @@ public class GameOverManager : MonoBehaviour
         {
             obj.SetActive(true);
         }
+    }
+
+    public void SaveHighscore()
+    {
+        int score = ScoreSystem.instance.curScore;
+        string timeNow = DateTime.Now.ToString("dd/MM/yyyy");
+        string toWrite = "";
+        toWrite = timeNow.ToString() + "-" + score.ToString();
+        ReadWriteFromFile.instance.AppendText(highscoreFile, toWrite);
     }
 }
